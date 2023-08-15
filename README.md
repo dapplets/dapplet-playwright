@@ -17,8 +17,9 @@ To use the `@dapplets/dapplet-playwright` library, you need to configure the `pl
 ```typescript
 import { defineConfig } from 'playwright';
 import { devices } from 'playwright-chromium';
+import { BrowserOptions } from "@dapplets/dapplet-playwright";
   
-export default defineConfig({
+export default defineConfig<BrowserOptions>({
   projects: [
     {
       name: "chromium",
