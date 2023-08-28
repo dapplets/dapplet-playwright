@@ -32,6 +32,19 @@ const downloadAndUnzip = async (url: string, targetDirectory: string) => {
   fs.unlinkSync(zipFilePath);
 };
 
+const getLastExtensionVersion = async (): Promise<string> => {
+  const url =
+    "https://api.github.com/repos/dapplets/dapplet-extension/releases/latest";
+  const resp = await fetch(url);
+
+  if (!resp.ok) {
+    throw new Error("Cannot get latest version number");
+  }
+
+  const data = await resp.json();
+  return data.name;
+};
+
 export type BrowserOptions = {
   newHeadless: boolean;
   extensionVersion?: string;
@@ -44,9 +57,13 @@ export const test = base.extend<BrowserOptions>({
   newHeadless: [false, { option: true }],
   extensionVersion: ["latest", { option: true }],
   context: async ({ newHeadless, extensionVersion }, use) => {
+    if (extensionVersion === "latest" || extensionVersion === undefined) {
+      extensionVersion = await getLastExtensionVersion();
+    }
+
     const extensionUrl = `https://github.com/dapplets/dapplet-extension/releases/download/${extensionVersion}/dapplet-extension.zip`;
     const extensionsPath = path.join(__dirname, "..", "artifacts");
-    const versionPath = path.join(extensionsPath, extensionVersion ?? "latest");
+    const versionPath = path.join(extensionsPath, extensionVersion); // ToDo: will cache forever
 
     if (!fs.existsSync(versionPath)) {
       await downloadAndUnzip(extensionUrl, versionPath);
