@@ -1,6 +1,6 @@
 {
   "name": "@dapplets/dapplet-playwright",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Playwright fixtures to test dapplets",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -32,6 +32,6 @@
   },
   "devDependencies": {
     "@types/adm-zip": "^0.5.0",
-    "typescript": "^5.1.6"
+    "typescript": "^5.2.2"
   }
 }
