@@ -1,7 +1,13 @@
-import { test as base } from './dapplet-runner';
+import { test as base } from "./dapplet-runner";
+
+export enum RegistryTypes {
+  Prod = "v3.registry.dapplet-base.eth",
+  Test = "test.v3.registry.dapplet-base.eth",
+}
 
 export type DappletExecutorOptions = {
-  registryUrl: string;
+  registry: RegistryTypes;
+  devServerUrl: string;
   dappletName: string;
   onboarding?: boolean;
 };
@@ -9,13 +15,27 @@ export type DappletExecutorOptions = {
 type ExtendParams = Parameters<typeof base.extend<DappletExecutorOptions>>;
 
 export const fixture: ExtendParams[0] = {
-  registryUrl: ['http://localhost:3001/dapplet.json', { option: true }],
-  dappletName: ['', { option: true }],
+  registry: [RegistryTypes.Prod, { option: true }],
+  devServerUrl: ["http://localhost:3001/dapplet.json", { option: true }],
+  dappletName: ["", { option: true }],
   onboarding: [false, { option: true }],
-  page: async ({ page, skipOnboarding, enableDevServer, activateDapplet, registryUrl, dappletName }, use) => {
+  page: async (
+    {
+      page,
+      skipOnboarding,
+      enableDevServer,
+      enableRegistry,
+      activateDapplet,
+      registry,
+      devServerUrl,
+      dappletName,
+    },
+    use
+  ) => {
     await skipOnboarding();
-    await enableDevServer(registryUrl);
-    await activateDapplet(dappletName, registryUrl);
+    await enableRegistry(registry);
+    await enableDevServer(devServerUrl);
+    await activateDapplet(dappletName, devServerUrl);
     await use(page);
   },
 };

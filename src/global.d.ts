@@ -3,6 +3,7 @@ interface DappletsServiceWorker {
   addRegistry(url: string, isDev: boolean): Promise<void>;
   removeRegistry(url: string): Promise<void>;
   enableRegistry(url: string): Promise<void>;
+  disableRegistry(url: string): Promise<void>;
   activateDapplet(params: {
     name: string;
     registryUrl: string;

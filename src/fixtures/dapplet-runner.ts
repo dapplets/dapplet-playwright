@@ -3,6 +3,7 @@ import { test as base } from "./browser";
 type DappletRunnerFixtures = {
   skipOnboarding(): Promise<void>;
   enableDevServer(devServerUrl: string): Promise<void>;
+  enableRegistry(registryUrl: string): Promise<void>;
   activateDapplet(dappletName: string, registryUrl: string): Promise<void>;
   deactivateDapplet(dappletName: string, registryUrl: string): Promise<void>;
 };
@@ -12,6 +13,18 @@ export const test = base.extend<DappletRunnerFixtures>({
     await use(async () => {
       await background.evaluate(() =>
         globalThis.dapplets.setIsFirstInstallation(false)
+      );
+    });
+  },
+  enableRegistry: async ({ background }, use) => {
+    await use(async (registryUrl) => {
+      await background.evaluate(
+        (devServerUrl) => globalThis.dapplets.addRegistry(devServerUrl, false),
+        registryUrl
+      );
+      await background.evaluate(
+        (devServerUrl) => globalThis.dapplets.enableRegistry(devServerUrl),
+        registryUrl
       );
     });
   },
