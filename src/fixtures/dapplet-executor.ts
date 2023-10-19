@@ -23,6 +23,7 @@ export const fixture: ExtendParams[0] = {
     {
       page,
       skipOnboarding,
+      enableDevMode,
       enableDevServer,
       enableRegistry,
       activateDapplet,
@@ -33,6 +34,7 @@ export const fixture: ExtendParams[0] = {
     use
   ) => {
     await skipOnboarding();
+    await enableDevMode();
     await enableRegistry(registry);
     await enableDevServer(devServerUrl);
     await activateDapplet(dappletName, devServerUrl);
