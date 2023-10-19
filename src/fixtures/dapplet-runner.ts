@@ -2,6 +2,8 @@ import { test as base } from "./browser";
 
 type DappletRunnerFixtures = {
   skipOnboarding(): Promise<void>;
+  enableDevMode(): Promise<void>;
+  disableDevMode(): Promise<void>;
   enableDevServer(devServerUrl: string): Promise<void>;
   enableRegistry(registryUrl: string): Promise<void>;
   activateDapplet(dappletName: string, registryUrl: string): Promise<void>;
@@ -15,6 +17,16 @@ export const test = base.extend<DappletRunnerFixtures>({
         globalThis.dapplets.setIsFirstInstallation(false)
       );
     });
+  },
+  enableDevMode: async ({ background }, use) => {
+    await use(async () => {
+      await background.evaluate(() => globalThis.dapplets.enableDevMode())
+    })
+  },
+  disableDevMode: async ({ background }, use) => {
+    await use(async () => {
+      await background.evaluate(() => globalThis.dapplets.disableDevMode())
+    })
   },
   enableRegistry: async ({ background }, use) => {
     await use(async (registryUrl) => {

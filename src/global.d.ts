@@ -1,4 +1,6 @@
 interface DappletsServiceWorker {
+  enableDevMode(): Promise<void>;
+  disableDevMode(): Promise<void>;
   setIsFirstInstallation(value: boolean): Promise<void>;
   addRegistry(url: string, isDev: boolean): Promise<void>;
   removeRegistry(url: string): Promise<void>;
